@@ -1,0 +1,39 @@
+.books-container {
+	display: grid;
+	grid-template-columns: 1fr repeat(12, minmax(auto, 60px)) 1fr;
+	grid-gap: 40px;
+	padding: 60px 0;
+}
+
+.add-icon-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 4rem;
+	height: 4rem;
+	background-color: #0a74bb;
+	border-radius: 100%;
+	position: fixed;
+	bottom: 5%;
+	right: 5%;
+	z-index: 10000;
+}
+
+.add-icon {
+	color: #fff;
+	width: 3rem;
+	height: 3rem;
+}
+
+@media only screen and (max-width: 700px) {
+	.books-container {
+		grid-column-end: span 12;
+	}
+}
+
+@media only screen and (max-width: 500px) {
+	.books-container {
+		grid-template-columns: 10px repeat(6, 1fr) 10px;
+		grid-gap: 10px;
+	}
+}

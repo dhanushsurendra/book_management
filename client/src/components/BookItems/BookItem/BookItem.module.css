@@ -1,0 +1,111 @@
+.book {
+	grid-column-end: span 4;
+	display: flex;
+	flex-direction: column;
+	background-color: #39393b;
+	cursor: pointer;
+	transition: all 0.3s ease 0s;
+	position: relative;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+	background: #fff;
+}
+
+.book:hover {
+	transform: translateY(-7px);
+}
+
+.book-header {
+	display: flex;
+	justify-content: space-between;
+}
+
+.book-image-container {
+	width: 100%;
+	padding-top: 56.25%;
+	overflow: hidden;
+	position: relative;
+}
+
+.book-image-container img {
+	width: 100%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.book-content {
+	padding: 20px;
+}
+
+.book-title {
+	font-weight: 600;
+	font-size: 1.6rem;
+}
+
+.book-info p {
+	font-size: 1.4rem;
+}
+
+.book-info {
+	display: flex;
+	align-self: end;
+	align-items: center;
+	margin-top: 1rem;
+}
+
+.book-delete-continer {
+	width: 3rem;
+	height: 3rem;
+	position: absolute;
+	top: 5%;
+	right: 5%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #fff;
+	border-radius: 50%;
+}
+
+.edit-icon {
+	color: #0a74bb;
+}
+
+.book-edit-container {
+	margin-left: auto;
+	padding: 8px 20px;
+	background-color: #0a74bb;
+	border: none;
+	color: #fff;
+	border-radius: 20px;
+	display: flex;
+	align-items: center;
+}
+
+.book-edit-container svg {
+	color: #fff;
+	margin-left: 0.7rem;
+}
+
+.delete-icon {
+	color: #c70000;
+}
+
+@media only screen and (max-width: 1000px) {
+	.book {
+		grid-column-end: span 6;
+	}
+}
+
+@media only screen and (max-width: 700px) {
+	.book {
+		grid-column-end: span 12;
+	}
+}
+
+@media only screen and (max-width: 500px) {
+	.book {
+		grid-column-end: span 6;
+	}
+}
