@@ -4,12 +4,14 @@ import Home from './containers/Home/Home'
 import Books from './containers/Books/Books'
 import Navigation from './components/Navigation/Navigation'
 import BookForm from './components/BookItems/BookForm/BookForm'
+import NotFound from './containers/NotFound/NotFound'
 
-function App() {
+const App = () => {
 	return (
 		<Router>
 			<Navigation />
 			<Routes>
+				<Route path="*" element={<NotFound />} />
 				<Route path="/" exact element={<Home />} />
 				<Route path="/books/:id" element={<BookForm />} />
 				<Route path="/books" element={<Books />} />

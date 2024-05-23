@@ -30,7 +30,7 @@ exports.getBook = asyncHandler(async (req, res, next) => {
 // @desc    Create new book
 // @route   POST api/v1/books
 // @access  Public
-exports.createBook = asyncHandler(async (req, res, next) => {
+exports.createBook = asyncHandler(async (req, res) => {
 
 	const book = await Book.create(req.body)
 
@@ -45,6 +45,8 @@ exports.createBook = asyncHandler(async (req, res, next) => {
 // @access  Public
 exports.updateBook = asyncHandler(async (req, res, next) => {
 	let book = await Book.findById(req.params.id)
+
+	console.log(req.body);
 
 	if (!book) {
 		return next(

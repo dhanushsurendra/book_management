@@ -14,7 +14,7 @@ const book = ({ book }) => {
 			<div className={classes['book-content']}>
 				<div className={classes['book-header']}>
 					<p class={classes['book-title']}>{book.title}</p>
-					<p style={{ fontSize: '1.6rem' }}>{book.year_published}</p>
+					<p style={{ fontSize: '1.6rem' }}>{book.yearPublished}</p>
 				</div>
 				<div className={classes['book-info']}>
 					<p style={{ marginRight: '2rem', color: '#303032' }}>
@@ -23,7 +23,7 @@ const book = ({ book }) => {
 					<p style={{ color: '#303032' }}>{book.genre}</p>
 					<Link
 						className={classes['book-edit-container']}
-						to={`/books/${book.id}`}
+						to={`/books/${book._id}`}
 						style={{ textDecoration: 'none' }}
 					>
 						<span>Edit</span>

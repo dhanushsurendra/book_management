@@ -1,0 +1,26 @@
+.container {
+    width: 100%;
+    height: calc(100vh - 12.5rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.container h1 {
+    font-size: 10rem;
+    color: gray;
+}
+
+.container p {
+    font-size: 3rem
+}
+
+.container a {
+    text-decoration: none;
+    background: #0a74bb;
+    color: white;
+    border-radius: 5rem;
+    padding: 1rem 2rem;
+    margin-top: 2rem;
+}
