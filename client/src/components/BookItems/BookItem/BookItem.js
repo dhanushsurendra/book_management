@@ -8,12 +8,12 @@ import classes from './BookItem.module.css'
 const book = ({ book }) => {
 	return (
 		<div className={classes.book}>
-			<div class={classes['book-image-container']}>
+			<div className={classes['book-image-container']}>
 				<img alt="not" src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1200&q=80" />
 			</div>
 			<div className={classes['book-content']}>
 				<div className={classes['book-header']}>
-					<p class={classes['book-title']}>{book.title}</p>
+					<p className={classes['book-title']}>{book.title}</p>
 					<p style={{ fontSize: '1.6rem' }}>{book.yearPublished}</p>
 				</div>
 				<div className={classes['book-info']}>

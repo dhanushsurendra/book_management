@@ -1,8 +1,19 @@
+.container {
+	width: 100%;
+}
+
+.div {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 3rem;
+}
+
 .books-container {
 	display: grid;
-	grid-template-columns: 1fr repeat(12, minmax(auto, 60px)) 1fr;
+	grid-template-columns: 1fr repeat(12, minmax(auto, 6rem)) 1fr;
 	grid-gap: 40px;
-	padding: 60px 0;
+	padding: 60px;
 }
 
 .add-icon-container {

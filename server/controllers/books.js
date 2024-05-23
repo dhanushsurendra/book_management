@@ -1,12 +1,31 @@
 const asyncHandler = require('../middleware/async')
 const Book = require('../models/Book')
 
+// @desc    Get single books
+// @route   GET api/v1/books/
+// @access  Public
 exports.getBooks = asyncHandler(async(req, res, next) => {
     // res.status(200).json(res.advancedResults)
 
-	const books = await Book.find();
+	const { keyword } = req.query
+	// Construct the search query
+	const searchQuery = {
+		$or: [
+			{ title: { $regex: keyword, $options: 'i' } },
+			{ genre: { $regex: keyword, $options: 'i' } },
+			{ author: { $regex: keyword, $options: 'i' } }
+		]
+	}
 
-	return res.status(200).json({ success: true, books})
+	// If keyword is a number, include yearPublished in the search query
+	if (!isNaN(keyword)) {
+		searchQuery.$or.push({ yearPublished: parseInt(keyword) })
+	}
+
+	// Perform the search query
+	const books = keyword ? await Book.find(searchQuery) : await Book.find()
+
+	res.json({ success: true, books })
 })
 
 // @desc    Get single books
@@ -84,3 +103,5 @@ exports.deleteBook = asyncHandler(async (req, res, next) => {
 
 	res.status(200).json({ success: true, data: {} })
 })
+
+

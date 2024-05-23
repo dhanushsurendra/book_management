@@ -9,8 +9,10 @@ import classes from './Books.module.css'
 const Books = () => {
 	return (
 		<>
-			<section className={classes['books-container']}>
-				<BookItems />
+			<section className={classes.container}>
+				<div className={classes.div}>
+					<BookItems className={classes['books-container']} />
+				</div>
 			</section>
 			<div>
 				<Link to={`/books/new`} className={classes['add-icon-container']}>
