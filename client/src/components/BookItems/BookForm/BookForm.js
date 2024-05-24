@@ -29,7 +29,7 @@ function BookForm() {
 
 	let { id } = useParams()
 
-	if (id == 'new') id = undefined
+	if (id === 'new') id = undefined
 
 	const navigate = useNavigate()
 

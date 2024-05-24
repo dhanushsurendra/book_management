@@ -4,7 +4,7 @@ const Book = require('../models/Book')
 // @desc    Get single books
 // @route   GET api/v1/books/
 // @access  Public
-exports.getBooks = asyncHandler(async(req, res, next) => {
+exports.getBooks = asyncHandler(async(req, res, _) => {
     // res.status(200).json(res.advancedResults)
 
 	const { keyword } = req.query
