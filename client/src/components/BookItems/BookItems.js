@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom';
 import axiosInstance from '../../redux/axiosInstance'
 
 import BookItem from './BookItem/BookItem'
@@ -12,6 +13,7 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContentText from '@mui/material/DialogContentText'
 import Button from '@mui/material/Button'
+import Pagination from '@mui/material/Pagination';
 
 import { ClipLoader } from 'react-spinners'
 
@@ -23,10 +25,18 @@ const Books = () => {
 	const [query, setQuery] = useState('')
 	const [open, setOpen] = useState(false)
 	const [bookId, setBookId] = useState('')
+	const [page, setPage] = useState(1)
+	const [totalPages, setTotalPages] = useState(0)
+
+	const navigate = useNavigate();
+
+	const params = useParams();
+	console.log(params)
+	const limit = 9
 
 	useEffect(() => {
 		getBooks()
-	}, [query])
+	}, [query, page])
 
 	const handleClickOpen = (open, id) => {
 		setOpen(open)
@@ -53,15 +63,24 @@ const Books = () => {
 
 	const getBooks = async () => {
 		try {
+			console.log(`Page number is: ${page}`);
 			setIsFetching(true)
-			const url = process.env.REACT_APP_API_URL + `books?keyword=${query}`
+			const url = process.env.REACT_APP_API_URL + `books?page=${page}&limit=${!limit ? 9 : limit}&keyword=${query}`
 			const { data } = await axiosInstance.get(url)
 			setBooks(data.books)
+			console.log(totalPages)
+			setTotalPages(data.totalPages)
 			setIsFetching(false)
 		} catch (error) {
 			console.log(error)
 			setIsFetching(false)
 		}
+	}
+
+	const handlePageChange = (_, value) => {
+		console.log(value);
+		navigate(`?page=${value}&limit=9`);
+		setPage(value)
 	}
 
 	return (
@@ -85,7 +104,7 @@ const Books = () => {
 			</Dialog>
 			<Search query={(q) => setQuery(q)} />
 			{isFetching && <ClipLoader color="#0a74bb" />}
-			{books.length === 0 ? <p>No books found</p> : null}
+			{books.length === 0 && !isFetching ? <p>No books found</p> : null}
 			{!isFetching && (
 				<div className={classes['books']}>
 					{books.map((book) => (
@@ -97,6 +116,7 @@ const Books = () => {
 					))}
 				</div>
 			)}
+			{!isFetching && <Pagination style={{ marginTop: '3rem'}} count={totalPages} page={page} onChange={handlePageChange} />}
 		</>
 	)
 }

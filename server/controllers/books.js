@@ -7,7 +7,7 @@ const Book = require('../models/Book')
 exports.getBooks = asyncHandler(async(req, res, _) => {
     // res.status(200).json(res.advancedResults)
 
-	const { keyword } = req.query
+	const { page, limit, keyword } = req.query
 	// Construct the search query
 	const searchQuery = {
 		$or: [
@@ -17,15 +17,32 @@ exports.getBooks = asyncHandler(async(req, res, _) => {
 		]
 	}
 
+	
 	// If keyword is a number, include yearPublished in the search query
 	if (!isNaN(keyword)) {
 		searchQuery.$or.push({ yearPublished: parseInt(keyword) })
 	}
+	
+	let totalDocs = 0
+	if (keyword) {
+		totalDocs = await Book.find(searchQuery).countDocuments()
+	} else {
+		totalDocs = await Book.find().countDocuments()
+	}
+
+	totalPages = Math.ceil(totalDocs / limit)
+
+	let books = {}
+	const pageNumber = page > 1 ? page - 1 : 0
 
 	// Perform the search query
-	const books = keyword ? await Book.find(searchQuery) : await Book.find()
+	if (keyword) {
+		books = await Book.find(searchQuery).skip(pageNumber * limit).limit(limit)
+	} else {
+		books = await Book.find().skip(pageNumber * limit).limit(limit)
+	}
 
-	res.json({ success: true, books })
+	res.json({ success: true, totalPages, books })
 })
 
 // @desc    Get single books
