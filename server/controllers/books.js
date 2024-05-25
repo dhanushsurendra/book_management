@@ -82,7 +82,6 @@ exports.createBook = asyncHandler(async (req, res) => {
 exports.updateBook = asyncHandler(async (req, res, next) => {
 	let book = await Book.findById(req.params.id)
 
-	console.log(req.body);
 
 	if (!book) {
 		return next(

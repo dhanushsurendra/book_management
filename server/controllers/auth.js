@@ -5,8 +5,6 @@ const ErrorResponse = require('../utils/errorResponse')
 exports.regsiter = asyncHandler(async(req, res) => {
     const { email, password } = req.body
 
-	console.log(email, password)
-
     const user = await User.create({email, password})
 
     sendResponseToken(user, 200, res)

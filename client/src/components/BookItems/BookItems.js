@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import axiosInstance from '../../redux/axiosInstance'
 
 import BookItem from './BookItem/BookItem'
 import Search from '../Search/Search'
@@ -33,8 +32,26 @@ const Books = () => {
 	const navigate = useNavigate()
 
 	useEffect(() => {
+		const getBooks = async () => {
+			try {
+				setIsFetching(true)
+				const url =
+					process.env.REACT_APP_API_URL +
+					`books?page=${page}&limit=9&keyword=${query}`
+				const { data } = await axios.get(url, {
+					headers: {
+						Authorization: `Bearer ${loginToken}` // Include token in Authorization header
+					}
+				})
+				setBooks(data.books)
+				setTotalPages(data.totalPages)
+				setIsFetching(false)
+			} catch (error) {
+				setIsFetching(false)
+			}
+		}
 		getBooks()
-	}, [query, page])
+	}, [query, page, loginToken])
 
 	const handleClickOpen = (open, id) => {
 		setOpen(open)
@@ -55,29 +72,12 @@ const Books = () => {
 			})
 			toast.success('Deleted successfully!')
 			setOpen(false)
-			setBooks(prevBooks => prevBooks.filter(book => book._id !== bookId));
+			setBooks((prevBooks) =>
+				prevBooks.filter((book) => book._id !== bookId)
+			)
 		} catch (error) {
 			toast.error('Delete failed!')
 			setOpen(false)
-		}
-	}
-
-	const getBooks = async () => {
-		try {
-			setIsFetching(true)
-			const url =
-				process.env.REACT_APP_API_URL +
-				`books?page=${page}&limit=9&keyword=${query}`
-			const { data } = await axios.get(url, {
-				headers: {
-					Authorization: `Bearer ${loginToken}` // Include token in Authorization header
-				}
-			})
-			setBooks(data.books)
-			setTotalPages(data.totalPages)
-			setIsFetching(false)
-		} catch (error) {
-			setIsFetching(false)
 		}
 	}
 

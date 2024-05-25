@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-import axiosInstance from '../../../redux/axiosInstance'
 import axios from 'axios'
 
 import { TextField, Button, Typography } from '@mui/material'
@@ -36,33 +35,34 @@ function BookForm() {
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		if (id) getBook(id)
-	}, [])
+		if (id) {
+			const getBook = async (id) => {
+				try {
+					setIsFetching(true)
+					const url = process.env.REACT_APP_API_URL + `books/${id}`
+					const { data } = await axios.get(url, {
+						headers: {
+							Authorization: `Bearer ${loginToken}`
+						}
+					})
+					setTitle(data.data.title)
+					setAuthor(data.data.author)
+					setGenre(data.data.genre)
 
-	const getBook = async (id) => {
-		try {
-			setIsFetching(true)
-			const url = process.env.REACT_APP_API_URL + `books/${id}`
-			const { data } = await axios.get(url, {
-				headers: {
-					Authorization: `Bearer ${loginToken}`
+					// set date
+					const date = new Date()
+					date.setFullYear(data.data.yearPublished)
+					setPublishedYear(dayjs(date))
+
+					setIsFetching(false)
+				} catch (error) {
+					console.log(error)
+					setIsFetching(false)
 				}
-			})
-			setTitle(data.data.title)
-			setAuthor(data.data.author)
-			setGenre(data.data.genre)
-
-			// set date
-			const date = new Date()
-			date.setFullYear(data.data.yearPublished)
-			setPublishedYear(dayjs(date))
-
-			setIsFetching(false)
-		} catch (error) {
-			console.log(error)
-			setIsFetching(false)
+			}
+			getBook()
 		}
-	}
+	}, [id, loginToken])
 
 	const handleSubmit = async (e) => {
 		e.preventDefault()
