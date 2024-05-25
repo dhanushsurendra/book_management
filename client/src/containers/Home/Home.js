@@ -27,7 +27,7 @@ const Home = () => {
 					</NavLink>
 				</div>
 				<div className={classes['header-right']}>
-					<img src={Hero} alt="Hero image" />
+					<img src={Hero} alt="Hero" />
 				</div>
 			</header>
 		</main>

@@ -4,7 +4,7 @@ import classes from './NavigationItem.module.css'
 
 const navigationItem = (props) => {
 	return (
-		<li className={classes['nav-item']}>
+		<li className={classes['nav-item']} onClick={props.onClick}>
 			<NavLink
 				to={props.link}
 				className={({ isActive }) =>

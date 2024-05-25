@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 import axiosInstance from '../../../redux/axiosInstance'
 import axios from 'axios'
@@ -26,6 +27,7 @@ function BookForm() {
 	const [genreError, setGenreError] = useState('')
 	const [submit, setSubmit] = useState(false)
 	const [isFetching, setIsFetching] = useState(false)
+	const loginToken = useSelector((state) => state.login.token)
 
 	let { id } = useParams()
 
@@ -41,7 +43,11 @@ function BookForm() {
 		try {
 			setIsFetching(true)
 			const url = process.env.REACT_APP_API_URL + `books/${id}`
-			const { data } = await axiosInstance.get(url)
+			const { data } = await axios.get(url, {
+				headers: {
+					Authorization: `Bearer ${loginToken}`
+				}
+			})
 			setTitle(data.data.title)
 			setAuthor(data.data.author)
 			setGenre(data.data.genre)
@@ -74,11 +80,18 @@ function BookForm() {
 				process.env.REACT_APP_API_URL + (id ? `books/${id}` : `books/`)
 			try {
 				setSubmit(true)
-				if (id) await axios.put(url, value)
+				if (id)
+					await axios.put(url, value, {
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${loginToken}`
+						}
+					})
 				else
 					await axios.post(url, JSON.stringify(value), {
 						headers: {
-							'Content-Type': 'application/json'
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${loginToken}`
 						}
 					})
 				toast.success(id ? 'Update successful!' : 'Create successful')

@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const { protect } = require('../middleware/auth');
+
 const {
     getBooks,
     getBook,
@@ -8,6 +10,8 @@ const {
     updateBook,
     deleteBook,
 } = require('../controllers/books')
+
+router.use(protect)
 
 router.route('/').get(getBooks).post(createBook)
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import axiosInstance from '../../redux/axiosInstance'
 
 import BookItem from './BookItem/BookItem'
@@ -13,7 +14,7 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContentText from '@mui/material/DialogContentText'
 import Button from '@mui/material/Button'
-import Pagination from '@mui/material/Pagination';
+import Pagination from '@mui/material/Pagination'
 
 import { ClipLoader } from 'react-spinners'
 
@@ -27,12 +28,9 @@ const Books = () => {
 	const [bookId, setBookId] = useState('')
 	const [page, setPage] = useState(1)
 	const [totalPages, setTotalPages] = useState(0)
+	const loginToken = useSelector((state) => state.login.token)
 
-	const navigate = useNavigate();
-
-	const params = useParams();
-	console.log(params)
-	const limit = 9
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		getBooks()
@@ -50,12 +48,15 @@ const Books = () => {
 	const deleteBook = async () => {
 		try {
 			const url = process.env.REACT_APP_API_URL + `books/${bookId}`
-			await axios.delete(url)
+			await axios.delete(url, {
+				headers: {
+					Authorization: `Bearer ${loginToken}` // Include token in Authorization header
+				}
+			})
 			toast.success('Deleted successfully!')
 			setOpen(false)
-			window.location.reload()
+			setBooks(prevBooks => prevBooks.filter(book => book._id !== bookId));
 		} catch (error) {
-			console.log(error)
 			toast.error('Delete failed!')
 			setOpen(false)
 		}
@@ -63,23 +64,25 @@ const Books = () => {
 
 	const getBooks = async () => {
 		try {
-			console.log(`Page number is: ${page}`);
 			setIsFetching(true)
-			const url = process.env.REACT_APP_API_URL + `books?page=${page}&limit=${!limit ? 9 : limit}&keyword=${query}`
-			const { data } = await axiosInstance.get(url)
+			const url =
+				process.env.REACT_APP_API_URL +
+				`books?page=${page}&limit=9&keyword=${query}`
+			const { data } = await axios.get(url, {
+				headers: {
+					Authorization: `Bearer ${loginToken}` // Include token in Authorization header
+				}
+			})
 			setBooks(data.books)
-			console.log(totalPages)
 			setTotalPages(data.totalPages)
 			setIsFetching(false)
 		} catch (error) {
-			console.log(error)
 			setIsFetching(false)
 		}
 	}
 
 	const handlePageChange = (_, value) => {
-		console.log(value);
-		navigate(`?page=${value}&limit=9`);
+		navigate(`?page=${value}&limit=9`)
 		setPage(value)
 	}
 
@@ -116,7 +119,14 @@ const Books = () => {
 					))}
 				</div>
 			)}
-			{!isFetching && <Pagination style={{ marginTop: '3rem'}} count={totalPages} page={page} onChange={handlePageChange} />}
+			{!isFetching && (
+				<Pagination
+					style={{ marginTop: '3rem' }}
+					count={totalPages}
+					page={page}
+					onChange={handlePageChange}
+				/>
+			)}
 		</>
 	)
 }

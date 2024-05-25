@@ -10,6 +10,7 @@ dotenv.config({ path: './config/config.env' })
 connectDB()
 
 const books = require('./routes/books')
+const auth = require('./routes/auth')
 
 const app = express()
 
@@ -21,6 +22,7 @@ app.use(cors())
 
 // mount routers
 app.use('/api/v1/books', books)
+app.use('/api/v1/auth', auth)
 
 app.use(errorHandler)
 

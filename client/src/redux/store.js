@@ -1,16 +1,30 @@
-import { configureStore } from '@reduxjs/toolkit'
-import { combineReducers } from 'redux'
+import { configureStore, createSlice } from '@reduxjs/toolkit';
 
-import { booksSlice } from './booksSlice'
+// Define slice for login token
+const loginSlice = createSlice({
+  name: 'login',
+  initialState: {
+    token: null,
+  },
+  reducers: {
+    setLoginToken: (state, action) => {
+      state.token = action.payload;
+    },
+	clearLoginToken: (state, _) => {
+		state.token = null
+	}
+  },
+});
 
-const reducers = combineReducers({
-	books: booksSlice
-})
+// Export action creators
+export const { setLoginToken } = loginSlice.actions;
+export const { clearLoginToken } = loginSlice.actions;
 
+// Create the Redux store
 const store = configureStore({
-	reducer: reducers,
-	middleware: (getDefaultMiddleware) =>
-		getDefaultMiddleware({ serializableCheck: false })
-})
+  reducer: {
+    login: loginSlice.reducer,
+  },
+});
 
-export default store
+export default store;
